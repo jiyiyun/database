@@ -77,7 +77,7 @@ mysql 修改密码
 ---
 ``` shell
 [root@centos73 ~]# mysqladmin -u root -p password y    #password 后面的y是新密码
-Enter password:                                        #这里输入以前的密码
+Enter password:                                        #这里输入以前的密码(第一次默认密码为空)
 ```
 修改密码的另一种方式
 ---
