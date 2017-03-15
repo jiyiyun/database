@@ -26,7 +26,7 @@ MySQL manager or server PID file could not be found![FAILED]
 
 ```txt
 [root@ttlsa ~]# chmod 644 /etc/my.cnf 
-
+```
 my.cnf设置为用户可读写，其他用户不可写.
 
 2.Can't connect to MySQL server on 'localhost' (10061)
