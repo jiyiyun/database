@@ -1,0 +1,548 @@
+admin-gui,manager-gui
+
+1、创业没有捷径可走，因为世上根本没有好赚的钱。
+2、钱可以用，但不可以浪费。
+3、用人最重要看几方面：第一工作能力，第二对公司的投入程度，第三可靠程度。如果这三个条件都是正面，随着时间、机会一到，便即晋升他。
+4、在剧烈的竞争当中多付出一点，便可多赢一点。就像参加奥运会一样，你看一、二、三名，跑第一的往往只是快了那么一点点。
+5、不要与业务“谈恋爱”，也就是不要沉迷于任何一项业务
+6、你要相信世界上每一个人都精明，要令人信服并喜欢和你交往，那才最重要。
+7、只要勤奋，肯去求知，肯去创新，对自己节俭，对别人慷慨，对朋友讲义气，再加上自己的努力，迟早会有所成就，生活无忧。
+8、在20岁前，事业上的成功百分之百靠双手勤劳换来；20岁至30岁之前，10%靠运气好，90%仍是由勤劳得来；之后，机会的比例也渐渐提高；60岁之后，运气已差不多要占三至四成了。
+9、财富不是单单用金钱来比拟的。衡量财富就是我所讲的，内心的富贵才是财富。
+10、人生自有其沉浮，每个人都应该学会忍受生活中属于自己的一分悲伤，只有这样，你才能体会到什么叫做成功，什么叫做真正的幸福。
+
+select * from T1 join T2 on T1.k=T2.k
+
+net9-24-yanxia-ubuntu1604
+vi /etc/resolvconf/resolv.conf.d/base
+nameserver 221.5.88.88
+nameserver 180.76.76.76
+
+vi /etc/network/interfaces
+iface enp2s1 inet static
+address 192.168.9.23
+
+prefix 24
+gateway 192.168.9.1
+
+net3-31-shaojun-ubuntu1604
+
+redis学习
+glob风格通配符规则
+?   匹配一个字符
+*   匹配任意个字符
+[]  配置中括号件任意一个字符，可以使用-表示一个范围a[b-d]可以匹配'ab','ac','ad'
+\x  匹配特殊字符，用于转义符号，如匹配? ,就需要使用\?
+
+redis> set foo 1
+OK
+redis> get foo
+1
+
+查看所有keys
+redis> KEYS *
+1) "foo"
+查看是否存在exists
+127.0.0.1:6379> exists foo
+(integer) 1    #存在返回1
+127.0.0.1:6379> exists bar
+(integer) 0    #不存在返回0
+
+删除一个或者多个键
+127.0.0.1:6379> del name
+(integer) 1      #返回1是键存在并成功删除
+127.0.0.1:6379> keys *
+1) "foo"
+
+查看数据类型
+127.0.0.1:6379> type foo
+string
+127.0.0.1:6379> lpush bar 1   #lpush是给指定的list中增加元素，不存在时就创建
+(integer) 1
+127.0.0.1:6379> lpush bar 2
+(integer) 2
+127.0.0.1:6379> lpush bar 3
+(integer) 3
+127.0.0.1:6379> keys *
+1) "foo"
+2) "bar"
+127.0.0.1:6379> type bar
+list
+
+字符串类型
+赋值与取值set & get
+set KEY VALUE
+GET KEY
+
+递增数字INCR num
+127.0.0.1:6379> set num 1
+OK
+127.0.0.1:6379> incr num
+(integer) 2
+127.0.0.1:6379> get num
+"2"
+127.0.0.1:6379> incr num
+(integer) 3
+127.0.0.1:6379> get num
+"3"
+127.0.0.1:6379>
+递增常用在文章/网站访问量统计
+
+一次性增加指定的整数 INCRBY key increment
+127.0.0.1:6379> get num
+"3"
+127.0.0.1:6379> incrby num 3
+(integer) 6
+127.0.0.1:6379> get num
+"6"
+127.0.0.1:6379> incrby num 4
+(integer) 10
+127.0.0.1:6379> get num
+"10"
+一次性减少指定的数目DECRBY key decrement
+127.0.0.1:6379> get num
+"10"
+127.0.0.1:6379> decrBY num 2
+(integer) 8
+
+逐渐递增INCR 一次递增到位 INCRBY
+逐渐递减DECR 一次递减到位 DECRBY
+
+增加浮点数INCRBYFLOAT
+127.0.0.1:6379> set pi 3.1415
+OK
+127.0.0.1:6379> get pi
+"3.1415"
+127.0.0.1:6379> incrbyfloat pi 5.555
+"8.6965"
+
+追加APPEND
+127.0.0.1:6379> set city shenzhen
+OK
+127.0.0.1:6379> append city "  guangdong"
+(integer) 19
+127.0.0.1:6379> get city
+"shenzhen  guangdong"
+
+获取字符串长度STRLEN KEY
+127.0.0.1:6379> get city
+"shenzhen  guangdong"
+127.0.0.1:6379> strlen city
+(integer) 19
+
+一次性设置多个键值 MSET  获取多个MGET
+127.0.0.1:6379> mset 010 beijing 020 shanghai 021 guangzhou 029 xian
+OK
+127.0.0.1:6379> get 020
+"shanghai"
+127.0.0.1:6379> mget 010 020 029
+1) "beijing"
+2) "shanghai"
+3) "xian"
+
+hash
+键     字段    字段值
+car    color   white
+       price   100
+	   model   c200
+
+例如：用键值储存文章数据
+键               键值
+post:42:title    第一篇日志
+post:42:author   小米
+post:42:time     2018-04-23
+post:42:content  今天星期一
+
+利用散列存储文章
+键        字段      字段值
+          title    第一篇日志
+          author   小白 
+post:42   time     2018-04-23
+          content  今天星期一
+由此可见hash存储文章比字符串类更节省存储空间，调用的时候只用一个hgetall key就行了更快方便
+
+HASH赋值和取值
+HSET key field
+HSET key  field  value
+HMSET key field value field value
+HMGET key field field
+HGETALL key
+
+127.0.0.1:6379> hset car price 500
+(integer) 1
+127.0.0.1:6379> hset car name BMW
+(integer) 1
+127.0.0.1:6379> hget car price
+"500"
+127.0.0.1:6379> hget car name
+"BMW"
+127.0.0.1:6379> 
+
+一次赋值多个HMSET
+127.0.0.1:6379> hset location north beijing south nanjing west xian east shanghai
+(integer) 4
+
+127.0.0.1:6379> hmget location north south west east
+1) "beijing"
+2) "nanjing"
+3) "xian"
+4) "shanghai"
+
+同时获取键和值
+127.0.0.1:6379> hgetall car
+1) "price"
+2) "500"
+3) "name"
+4) "BMW"
+
+查询字段是否存在 HEXISTS key field
+127.0.0.1:6379> hexists car model
+(integer) 0
+127.0.0.1:6379> hset car model c200
+(integer) 1
+127.0.0.1:6379> hexists car model
+(integer) 1
+127.0.0.1:6379> hget car model
+"c200"
+
+增加数字HINCRBY key field increment
+127.0.0.1:6379> hincrby person score 60
+(integer) 60
+127.0.0.1:6379> hincrby person score 40
+(integer) 100
+127.0.0.1:6379> 
+总结：类似域上面的字符串，只不过针对hash 前面多了个字母h
+
+删除字段 hdel key field
+127.0.0.1:6379> hget car price
+"500"
+127.0.0.1:6379> hdel car price
+(integer) 1
+127.0.0.1:6379> hgetall car
+1) "name"
+2) "BMW"
+3) "model"
+4) "c200"
+
+只获取字段名或字段值 HKEYS key   HVALS key
+127.0.0.1:6379> hkeys car
+1) "name"
+2) "model"
+127.0.0.1:6379> hvals car
+1) "BMW"
+2) "c200"
+127.0.0.1:6379> 
+
+获取字段数量 HLEN key
+127.0.0.1:6379> hlen car
+(integer) 2
+
+列表类型list
+列表由于获取两端数据的速度特别快，所以适合做搜索热度排名，获取20条的前十条和获取一千万条的前十条速度是一样的
+向列表两端增加元素LPUSH  RPUSH （lift right）
+LPUSH key value [value ...]
+RPUSH key value [value ...]
+LPUSH 是从列表左边增加元素，返回值是增加元素后列表的长度
+127.0.0.1:6379> lpush numbers 1
+(integer) 1
+127.0.0.1:6379> lpush numbers 2 3
+(integer) 3
+127.0.0.1:6379> lpush numbers 4 5 6
+(integer) 6
+列表中值的顺序应该是 6 5 4 3 2 1
+
+RPUSH 是从右边增加元素，返回值是列表长度
+127.0.0.1:6379> rpush numbers 0 -1 -2
+(integer) 9
+
+从列表两端弹出元素
+LPOP key
+RPOP key
+LPOP执行两个操作，1、将最左边元素从列表中剔除，2，返回被剔除元素的值
+获取list长度llen
+127.0.0.1:6379> llen numbers
+(integer) 9           #不存在时，返回0
+
+获取list片段
+LRANGE key  start stop
+Redis起始索引为0
+127.0.0.1:6379> llen numbers
+(integer) 9
+
+127.0.0.1:6379> lrange numbers 0 8
+1) "6"
+2) "5"
+3) "4"
+4) "3"
+5) "2"
+6) "1"
+7) "0"
+8) "-1"
+9) "-2"
+-1表示最后一个元素，从起始到末尾可以用lrange KEY 0 -1
+127.0.0.1:6379> lrange numbers 0 -1
+1) "6"
+2) "5"
+3) "4"
+4) "3"
+5) "2"
+6) "1"
+7) "0"
+8) "-1"
+9) "-2"
+超出范围则返回到最右边的元素，如果start位置比stop靠后则返回空
+
+删除list中指定的值
+LREM  key  count value
+(list remove)
+删除list前count个值为value的元素，返回值是实际删除元素的个数
+count >0 LREM 从左边开始删，count <0 从list右边开始删 count=0 删除所有值为value的元素
+127.0.0.1:6379> rpush numbers 99
+(integer) 10
+127.0.0.1:6379> lrange numbers 0 -1
+ 1) "6"
+ 2) "5"
+ 3) "4"
+ 4) "3"
+ 5) "2"
+ 6) "1"
+ 7) "0"
+ 8) "-1"
+ 9) "-2"
+10) "99"
+127.0.0.1:6379> lrem numbers -1 2
+(integer) 1
+从右开始删一个，值为2的元素，返回的1代表删了一个key
+127.0.0.1:6379> lrange numbers 0 -1
+1) "6"
+2) "5"
+3) "4"
+4) "3"
+5) "1"
+6) "0"
+7) "-1"
+8) "-2"
+9) "99"
+
+
+127.0.0.1:6379> lpush numbers 99
+(integer) 10
+127.0.0.1:6379> rpush numbers 99
+(integer) 11
+127.0.0.1:6379> lrange numbers 0 -1
+ 1) "99"
+ 2) "6"
+ 3) "5"
+ 4) "4"
+ 5) "3"
+ 6) "1"
+ 7) "0"
+ 8) "-1"
+ 9) "-2"
+10) "99"
+11) "99"
+127.0.0.1:6379> lrem numbers 0 99
+(integer) 3     #这里3表示匹配了3个元素
+127.0.0.1:6379> lrange numbers 0 -1
+1) "6"
+2) "5"
+3) "4"
+4) "3"
+5) "1"
+6) "0"
+7) "-1"
+8) "-2"
+127.0.0.1:6379> 
+
+redis 集群
+1、redis复制
+只要修改一个参数就可以了  --slaveof MASTER_IP MASTER_PORT
+vi redis.conf
+
+# slaveof <masterip> <masterport>
+slaveof 127.0.0.1 6379
+
+如果是伪集群则要要更换slave的端口不要和master端口冲突
+# Accept connections on the specified port, default is 6379 (IANA #815344).
+# If port 0 is specified Redis will not listen on a TCP socket.
+port 6380
+编辑完执行命令
+$ redis-server /PATH_OF_REDIS/redis.conf
+
+
+用命令行
+$redis-server --port 6380  --slaveof 127.0.0.1 6379
+进入伪集群
+$redis-cli  -p 6380
+127.0.0.1:6380> 
+
+在master上面查看slave
+127.0.0.1:6379> info replication
+# Replication
+role:master
+connected_slaves:1
+slave0:ip=127.0.0.1,port=6380,state=online,offset=8820,lag=0
+master_replid:1bcf7c3a12d6e2236d4bb21c45f0210c703c8c3f
+master_replid2:0000000000000000000000000000000000000000
+master_repl_offset:8820
+second_repl_offset:-1
+repl_backlog_active:1
+repl_backlog_size:1048576
+repl_backlog_first_byte_offset:1
+repl_backlog_histlen:8820
+
+在slave上查看
+127.0.0.1:6380> info replication
+# Replication
+role:slave
+master_host:127.0.0.1
+master_port:6379
+master_link_status:up
+master_last_io_seconds_ago:1
+master_sync_in_progress:0
+slave_repl_offset:8946
+slave_priority:100
+slave_read_only:1
+connected_slaves:0
+master_replid:1bcf7c3a12d6e2236d4bb21c45f0210c703c8c3f
+master_replid2:0000000000000000000000000000000000000000
+master_repl_offset:8946
+second_repl_offset:-1
+repl_backlog_active:1
+repl_backlog_size:1048576
+repl_backlog_first_byte_offset:1
+repl_backlog_histlen:8946
+类似于mysql主从同步
+
+测试同步情况
+127.0.0.1:6379> set test_replication test001
+OK
+127.0.0.1:6379> 
+从slave上面的日志
+12885:S 24 Apr 15:50:40.600 * 1 changes in 900 seconds. Saving...
+12885:S 24 Apr 15:50:40.601 * Background saving started by pid 13047
+13047:C 24 Apr 15:50:40.667 * DB saved on disk
+13047:C 24 Apr 15:50:40.668 * RDB: 0 MB of memory used by copy-on-write
+12885:S 24 Apr 15:50:40.701 * Background saving terminated with success
+
+127.0.0.1:6380> keys *
+ 1) "location"
+ 2) "021"
+ 3) "bar"
+ 4) "city"
+ 5) "numbers"
+ 6) "029"
+ 7) "test_replication"
+ 8) "foo"
+ 9) "car"
+10) "person"
+11) "num"
+12) "020"
+13) "010"
+14) "pi"
+127.0.0.1:6380> get test_replication
+"test001"
+
+可以设置 slave-read-only 为可写但是会造成主从不一致
+还可以在已经运行的主机上执行slaveof命令
+redis> SLAVEOF 127.0.0.1 6379
+如果该数据库已经是其它的slave了则会停止原来的更新为新的
+还可以通过SLAVEOF NO ONE 停止接收其它数据库数据，成为master
+
+从数据库发送SYNC
+min-slaves-max-lag   从数据库最长失去连接的时间
+
+当主数据库崩溃的时候，首先要设从库SLAVEOF NO ONE ，主库修复好了以后用slaveof 来把数据同步回来
+
+手动设置主从比较麻烦易出错，在规模比较大的情况下，这里就引入了哨兵sentinel
+
+增量复制
+当主从断开以后，每次恢复都会把主库的所有数据重新快照并传一次，数据量大的情况下会出现瓶颈，所以引入了增量复制
+原理：从库储存主库的运行ID (RUN ID)每个redis运行时运行一个唯一的RUN ID,每次重启后自动生成一个新ID
+复制同步阶段，主库每将命令传给数据库时，都会把命令同时存放到积压队列中(backlog),并记录当前积压队列命令的偏移值
+从库接收时，也记下偏移量
+
+哨兵sentinel 
+哨兵的作用是监控redis集群运行情况
+1)监控主从是否正常运行
+2)主库故障时，自动将从库切换为主库
+哨兵可以监控多个数据库，也可以多个哨兵互相监督
+测试sentinel ,开启两个redis slave
+127.0.0.1:6379> info replication
+# Replication
+role:master
+connected_slaves:2
+slave0:ip=127.0.0.1,port=6380,state=online,offset=14324,lag=1
+slave1:ip=127.0.0.1,port=6381,state=online,offset=14324,lag=1
+master_replid:1bcf7c3a12d6e2236d4bb21c45f0210c703c8c3f
+master_replid2:0000000000000000000000000000000000000000
+master_repl_offset:14324
+second_repl_offset:-1
+repl_backlog_active:1
+repl_backlog_size:1048576
+repl_backlog_first_byte_offset:1
+repl_backlog_histlen:14324
+127.0.0.1:6379>
+
+修改sentinel.conf 
+# sentinel monitor <master-name> <ip> <redis-port> <quorum>
+#
+# Tells Sentinel to monitor this master, and to consider it in O_DOWN
+# (Objectively Down) state only if at least <quorum> sentinels agree.
+#
+# Note that whatever is the ODOWN quorum, a Sentinel will require to
+# be elected by the majority of the known Sentinels in order to
+# start a failover, so no failover can be performed in minority.
+sentinel monitor mymaster 127.0.0.1 6379 1
+最后那个1是最低通过票数
+# sentinel monitor <master-name> <ip> <redis-port> <quorum>
+sentinel monitor myredis_master 127.0.0.1 6379 1
+只在master上启动哨兵监控master库就行了，也可以在多个主机上启动多个sentinel相互监督
+[root@centos4 src]# ./redis-sentinel ../sentinel.conf
+13211:X 24 Apr 17:02:47.638 # Sentinel ID is 6ed3632e4977f5bce4e7a0f762fc356ca1a1af9e
+13211:X 24 Apr 17:02:47.638 # +monitor master myredis_master 127.0.0.1 6379 quorum 1
+13211:X 24 Apr 17:02:47.638 # +monitor master mymaster 127.0.0.1 6379 quorum 2
+13211:X 24 Apr 17:02:47.640 * +slave slave 127.0.0.1:6380 127.0.0.1 6380 @ myredis_master 127.0.0.1 6379
+13211:X 24 Apr 17:02:47.670 * +slave slave 127.0.0.1:6381 127.0.0.1 6381 @ myredis_master 127.0.0.1 6379
+13211:X 24 Apr 17:02:47.704 * +slave slave 127.0.0.1:6380 127.0.0.1 6380 @ mymaster 127.0.0.1 6379
+13211:X 24 Apr 17:02:47.746 * +slave slave 127.0.0.1:6381 127.0.0.1 6381 @ mymaster 127.0.0.1 6379
+
+# sentinel auth-pass mymaster MySUPER--secret-0123passw0rd
+设置密码
+# sentinel down-after-milliseconds <master-name> <milliseconds>
+设置
+
+哨兵和集群是两个独立的功能，如果需要水平扩容集群是好的选择
+设置集群只需要将每个数据库节点的cluster-enabled配置选项打开即可，每个集群至少需要3个主数据库才可以正常运行
+# Normal Redis instances can't be part of a Redis Cluster; only nodes that are
+# started as cluster nodes can. In order to start a Redis instance as a
+# cluster node enable the cluster support uncommenting the following:
+#
+# cluster-enabled yes
+
+# Every cluster node has a cluster configuration file. This file is not
+# intended to be edited by hand. It is created and updated by Redis nodes.
+# Every Redis Cluster node requires a different cluster configuration file.
+# Make sure that instances running in the same system do not have
+# overlapping cluster configuration file names.
+#
+# cluster-config-file nodes-6379.conf
+node.conf 是记录集群状态持久化的文件
+查看集群状态
+redis> INFO cluster
+
+使用redis-trib.rb 来初始化集群，因为redis-trib.rb是用Ruby 写的，需要在服务器上安装Ruby程序，redis-trib.rb
+依赖于gem包redis 执行gem install redis来安装
+[root@centos4 create-cluster]# ./create-cluster help
+Usage: ./create-cluster [start|create|stop|watch|tail|clean]
+start       -- Launch Redis Cluster instances.
+create      -- Create a cluster using redis-trib create.
+
+集群必须至少有三主数据库，我们测试用三主三从
+./redis-trib.rb create --replicas 1 127.0.0.1:6380 127.0.0.1:6380 127.0.0.1:6381 127.0.0.1:6382 127.0.0.1:6383 127.0.0.1:6384 127.0.0.1:6385
+
+
+
+
+
+
