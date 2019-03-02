@@ -26,6 +26,14 @@ $cp ~/redis-3.2.8/redis.conf .
 $ ./redis-server redis.conf
 
 注意要使用sudo 权限
+查看redis版本
+$ ./redis-cli -v
+redis-cli 3.2.8
+
+登录redis
+$ ./redis-cli -p 7000
+127.0.0.1:7000> KEYS *
+
 ```
 
 逐一启动集群单个节点
